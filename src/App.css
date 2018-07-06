@@ -22,7 +22,30 @@
   font-size: large;
 }
 
+circle:hover {
+  stroke: white;
+  stroke-width: 4px;
+}
+
+div.tooltip {
+  position: absolute;
+  text-align: left;
+  background: #ffffff;
+  display: table;
+  padding: 5px;
+  font: 12px sans-serif;
+  opacity: 0;
+  pointer-events: none;
+}
+div.tooltip.hover {
+  opacity: 0.9;
+}
+
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

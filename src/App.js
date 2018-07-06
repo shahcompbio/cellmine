@@ -1,18 +1,31 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import getData from "./utils/dataFetcher.js";
+import Chart from "./Chart/Chart.js";
+import "./App.css";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: null
+    };
+  }
+
+  componentDidMount() {
+    const dataCallback = data => {
+      this.setState({ data });
+    };
+    getData(dataCallback);
+  }
+
   render() {
-    return (
+    return this.state.data === null ? null : (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Chart
+          stats={this.state.data.stats}
+          library={this.state.data.library}
+          samples={this.state.data.samples}
+        />
       </div>
     );
   }
