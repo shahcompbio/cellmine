@@ -13,6 +13,7 @@ class CircleChart extends Component {
 
   createChart() {
     const libraries = this.props.library,
+      info = this.props.info,
       samples = this.props.samples,
       stats = this.props.stats,
       node = select(this.node),
@@ -23,6 +24,15 @@ class CircleChart extends Component {
       showTooltip = this.props.showTooltip.bind(this),
       colossusUrl = "https://40.86.218.15:44111/?dashboard=";
 
+    const allowedFilters = [
+      "anonymous_patient_id",
+      "library",
+      "sample",
+      "sample_type",
+      "cell_line_id",
+      "taxonomy_id",
+      "jira_ticket"
+    ];
     //Initialize the bubble colours
     const chartColours = initializeChartColours(samples.length);
 
@@ -98,7 +108,13 @@ class CircleChart extends Component {
         .attr("target", "_blank")
         .append("circle")
         .attr("class", "circles")
-        .attr("class", d => "sample-" + d.data.sample)
+        .attr("class", d => {
+          var classes = "";
+          allowedFilters.map(
+            filter => (classes += "tag-" + d.data[filter] + " ")
+          );
+          return classes;
+        })
         .attr("id", d => "library-" + d.data.id)
         .on("mouseenter", showTooltip)
         .on("mouseleave", hideTooltip)

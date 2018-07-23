@@ -1,50 +1,63 @@
 import * as d3 from "d3";
 const getData = callback => {
-  const url = "http://colossus.bcgsc.ca/api/library/?format=json";
-  var myTestData = require("../testData.json");
-  //var myTestData = JSON.parse("testData.json");
-  //fetchUrl(url, [], arr => {
-  const libraries = processLibs(myTestData.results);
-  const samples = sampleFilter(libraries);
-  const data = {
-    library: packNodes(nestedNotation(libraries)),
-    samples: samples,
-    stats: {
-      libraryCount: libraries.length
-    }
-  };
-  callback(data);
-  //});
+  const url = "http://localhost:2210/meta_data_stats/_search?size=10000";
+
+  fetchUrl(url, [], arr => {
+    const libraries = processLibs(arr);
+    const samples = sampleFilter(libraries);
+    const data = {
+      filters: processFilters(arr),
+      librarySpecificFilters: libraries,
+      library: packNodes(nestedNotation(libraries)),
+      samples: samples,
+      stats: {
+        libraryCount: libraries.length
+      }
+    };
+    callback(data);
+  });
 };
 async function fetchUrl(url, arr, callback) {
-  if (url == null) {
-    callback(arr);
-  } else {
-    fetch(url)
-      .then(response => response.json())
-      .then(response => {
-        const jsonArr = Object.values(response.results);
-        fetchUrl(response.next, [...arr, ...jsonArr], callback);
+  fetch(url)
+    .then(response => response.json())
+    .then(response => {
+      const jsonArr = Object.values(response.hits.hits);
+      callback(jsonArr);
+    });
+}
+
+function processFilters(data) {
+  //Only keep unique values
+  return data
+    .reduce((result, hit) => [...result, hit["_source"]], [])
+    .reduce((result, hit) => {
+      var unique = Object.keys(hit).filter(key => {
+        if (!result.hasOwnProperty(key)) {
+          result[key] = [];
+        }
+        return result[key].includes(hit[key]) || hit[key] === ""
+          ? result
+          : result[key].push(hit[key]);
       });
-  }
+      return result;
+    }, {});
 }
 
 function processLibs(data) {
   var parseTime = d3.timeParse("%Y-%m-%d");
-  return data
-    .filter(hit => hit.dlpsequencing_set.length > 0)
-    .filter(hit => hit.num_sublibraries > 0)
-    .map(filterData => ({
-      ticket: filterData.jira_ticket,
-      id: filterData.id,
-      library: filterData.pool_id,
-      sample: filterData.sample.sample_id,
-      size: filterData.num_sublibraries,
-      seq: parseTime(filterData.dlpsequencing_set[0].submission_date)
-    }))
-    .filter((d, i) => {
-      return i < 50;
-    });
+
+  return data.map(hit => ({
+    anonymous_patient_id: hit["_source"].anonymous_patient_id,
+    jira_ticket: hit["_source"].jira_ticket,
+    //id: hit["_source"].id,
+    library: hit["_source"].pool_id,
+    sample: hit["_source"].sample_id,
+    sample_type: hit["_source"].sample_type,
+    size: hit["_source"].num_sublibraries,
+    cell_line_id: hit["_source"].cell_line_id,
+    taxonomy_id: hit["_source"].taxonomy_id,
+    seq: parseTime(hit["_source"].submission_date)
+  }));
 }
 
 function sampleFilter(data) {
@@ -56,6 +69,7 @@ function sampleFilter(data) {
 const pack = d3
   .pack()
   .size([window.innerWidth * 0.9, window.innerHeight * 0.8]);
+
 function packNodes(libraries) {
   return pack(libraries)
     .descendants()
