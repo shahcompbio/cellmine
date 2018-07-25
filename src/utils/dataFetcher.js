@@ -50,7 +50,7 @@ function processLibs(data) {
     anonymous_patient_id: hit["_source"].anonymous_patient_id,
     jira_ticket: hit["_source"].jira_ticket,
     //id: hit["_source"].id,
-    library: hit["_source"].pool_id,
+    pool_id: hit["_source"].pool_id,
     sample: hit["_source"].sample_id,
     sample_type: hit["_source"].sample_type,
     size: hit["_source"].num_sublibraries,

@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 import { select } from "d3";
+import Select from "react-select";
+import Animated from "react-select/lib/animated";
+import makeAnimated from "react-select/lib/animated";
 
 class Filters extends Component {
   constructor(props) {
@@ -8,13 +11,18 @@ class Filters extends Component {
     this.state = {
       allowedChoosenFilters: []
     };
-    this.allowedFilter = this.allowedFilter.bind(this);
+    this.allowedFilters = {
+      anonymous_patient_id: "Anonymous Patient ID",
+      library: "Library",
+      pool_id: "Sample ID",
+      sample_type: " Sample Type",
+      cell_line_id: "Cell Line ID",
+      taxonomy_id: "Taxonomy",
+      jira_ticket: "Ticket Number"
+    };
+
+    this.allowedLibraries = this.props.librarySpecificFilters;
   }
-  allowedFilter = () => {
-    this.setState({
-      allowedChoosenFilters: []
-    });
-  };
   componentDidMount() {
     this.createChart();
   }
@@ -33,197 +41,7 @@ class Filters extends Component {
     const filters = this.props.filters;
     const librarySpecificFilters = this.props.librarySpecificFilters;
 
-    const allowedFilters = {
-      anonymous_patient_id: "Anonymous Patient ID",
-      library: "Library",
-      pool_id: "Sample ID",
-      sample_type: " Sample Type",
-      cell_line_id: "Cell Line ID",
-      taxonomy_id: "Taxonomy",
-      jira_ticket: "Ticket Number"
-    };
-
-    function addFilters(filters, librarySpecificFilters) {
-      if (filters !== undefined && filters !== null) {
-        var htmlBoxes = d3
-          .selectAll(".Filters")
-          .attr("width", windowDim.screenWidth)
-          .attr("height", windowDim.screenHeight)
-          .append("div")
-          .attr("class", "dropdown")
-          .append("ul")
-          .attr("class", "filterList");
-
-        Object.keys(filters)
-          .filter(filter => allowedFilters.hasOwnProperty(filter))
-          .map(filter => {
-            var data = filters[filter];
-            var box = htmlBoxes.append("li").classed("filters", true);
-
-            box.append("div").text(d => allowedFilters[filter]);
-
-            box
-              .append("button")
-              .attr("data-toggle", "dropdown")
-              .attr("id", filter + "-filter")
-              .attr("type", "button")
-              .attr(
-                "class",
-                filter + " btn btn-default btn-md dropdown-toggle btn btn-light"
-              )
-              .append("span")
-              .classed("button-text", true)
-              .text("");
-
-            box
-              .select("button")
-              .append("span")
-              .attr("class", "caret pull-right");
-
-            box
-              .append("ul")
-              .attr("class", "dropdown-menu")
-              .attr("role", "menu")
-              .attr("id", filter + "-filter")
-              .selectAll("li")
-              .data(data)
-              .enter()
-              .append("li")
-              .attr("role", "presentation")
-              .on("mouseover", function(d) {
-                d3.select(this).classed("filterHover", true);
-              })
-              .on("mouseout", function(d) {
-                d3.select(this).classed("filterHover", false);
-              })
-              .on("click", function(d) {
-                var allowedLibraries = chooseFilter(d, librarySpecificFilters);
-                applyFilter(d, allowedLibraries);
-              })
-              .append("input")
-              .attr("type", "checkbox")
-              .attr("value", d => (filter === "taxonomy_id" ? "tax-" + d : d))
-              .text(d => d);
-
-            box
-              .selectAll("li")
-              .data(data)
-              .append("a")
-              .attr("tabindex", "-1")
-              .attr("role", "menuitem")
-              .attr("href", "#")
-              .attr("data-value", d => {
-                var dataValue = d.replace(/\((.*)\)/, "_$1_").replace(" ", "_");
-                return "data-" + dataValue;
-              })
-              .text(d => d);
-          });
-      }
-    }
-
-    function updateCheckmark(selectedElement, uncheck) {
-      var parentElement = selectedElement.select(function() {
-        return this.parentNode;
-      });
-      parentElement.select("input").attr("checked", uncheck);
-    }
-
-    function disableAllFilterOptions() {
-      //Disable all
-      d3
-        .selectAll(".filterList .filters li")
-        .classed("selected", false)
-        .classed("disabled", true);
-    }
-    function getChoosenFilters() {
-      var alreadyChoosenFilters = [];
-      d3.selectAll(".filters").each(function(d) {
-        d3
-          .select(this)
-          .selectAll(".selected")
-          .each(function(d) {
-            alreadyChoosenFilters.push(d);
-          });
-      });
-      return alreadyChoosenFilters;
-    }
-    function chooseFilter(d, librarySpecificFilters) {
-      var element = d.replace(/\((.*)\)/, "_$1_").replace(" ", "_");
-      var isDisabled = d3
-        .select("a[data-value = data-" + element + "]")
-        .classed("disabled");
-
-      if (!isDisabled) {
-        var selectedElement = d3.select("a[data-value = data-" + element + "]");
-        var isSelected = d3
-          .select("a[data-value = data-" + element + "]")
-          .classed("selected");
-
-        selectedElement.classed("selected", !isSelected);
-        var checkMarkValue = isSelected ? null : "";
-        updateCheckmark(selectedElement, checkMarkValue);
-
-        var alreadyChoosenFilters = getChoosenFilters();
-
-        var notAllowedLibraries = [];
-        librarySpecificFilters.map(library => {
-          alreadyChoosenFilters.map(filter => {
-            if (
-              Object.values(library).indexOf(filter) <= -1 &&
-              notAllowedLibraries.indexOf(library) <= -1
-            ) {
-              notAllowedLibraries.push(library);
-            }
-          });
-        });
-
-        var allowedLibraries = librarySpecificFilters.filter(function(x) {
-          return notAllowedLibraries.indexOf(x) < 0;
-        });
-
-        disableAllFilterOptions();
-        clearAllFilterTitles();
-        //enable only allowed ones
-        allowedLibraries.map(library => {
-          Object.keys(library).map(key => {
-            if (library[key] !== "" && allowedFilters.hasOwnProperty(key)) {
-              var modifiedDataValue = library[key]
-                .replace(/\((.*)\)/, "_$1_")
-                .replace(" ", "_");
-
-              var activeSelection = d3.select(
-                "a[data-value = data-" + modifiedDataValue + "]"
-              );
-              var parentNode = activeSelection.select(function() {
-                return this.parentNode;
-              });
-
-              if (alreadyChoosenFilters.indexOf(library[key]) > -1) {
-                updateCheckmark(activeSelection, "");
-                activeSelection.classed("selected", true);
-                var buttonNode = parentNode
-                  .select(function() {
-                    return this.parentNode;
-                  })
-                  .select(function() {
-                    return this.parentNode;
-                  })
-                  .select("button");
-                buttonNode.select(".button-text").text(library[key]);
-              }
-              //Enable option and move to the top
-              parentNode.classed("disabled", false);
-              parentNode.lower();
-            }
-          });
-        });
-        return allowedLibraries;
-      }
-    }
-    function clearAllFilterTitles() {
-      d3.selectAll(".button-text").text("");
-    }
-    function applyFilter(d, allowedLibraries) {
+    function applyFilter(allowedLibraries) {
       d3.selectAll(".CircleChart circle").classed("hiddenCircle", true);
 
       allowedLibraries.map(library => {
@@ -236,14 +54,135 @@ class Filters extends Component {
           .attr("r", d => d.r);
       });
     }
-    addFilters(filters, librarySpecificFilters);
+    applyFilter(this.allowedLibraries);
   }
+  state = {
+    selectedOption: null
+  };
+
+  isFilterAllowed = (addedOption, type) => {
+    var isFilterAllowed = false;
+    this.allowedLibraries.map(library => {
+      if (library.hasOwnProperty(type) && library[type] === addedOption) {
+        isFilterAllowed = true;
+      }
+    });
+    return isFilterAllowed;
+  };
+  setAllowedLibraries = () => {
+    var hiddenLibraries = [];
+    Object.keys(this.state.allowedChoosenFilters).map(filter => {
+      this.props.librarySpecificFilters.map(library => {
+        var selectedFilters = this.state.allowedChoosenFilters[filter];
+        if (
+          selectedFilters.length !== 0 &&
+          selectedFilters.indexOf(library[filter]) <= -1 &&
+          hiddenLibraries.indexOf(library) <= -1
+        ) {
+          hiddenLibraries.push(library);
+        }
+      });
+    });
+
+    this.allowedLibraries = this.props.librarySpecificFilters.filter(function(
+      x
+    ) {
+      return hiddenLibraries.indexOf(x) < 0;
+    });
+  };
+
+  handleChange = (selectedOption, state, type) => {
+    var oldFilters = state.allowedChoosenFilters[type];
+    if (state.selectedOption !== undefined && oldFilters !== undefined) {
+      var newFilters = [];
+      //A deletion
+      if (selectedOption.length < oldFilters.length) {
+        //Go through all the old choosen options and find the one that is removed
+        var removedOption = oldFilters.filter(function(x) {
+          return selectedOption.map(hit => hit.value).indexOf(x) < 0;
+        });
+        //Get all the new options
+        //  var index = state.allowedChoosenFilters[type].indexOf(removedOption[0]);
+        this.state.allowedChoosenFilters[type] = state.allowedChoosenFilters[
+          type
+        ].filter(hit => hit !== removedOption[0]);
+      } else {
+        //selectedOption
+        var addedOption = selectedOption.filter(function(x) {
+          return oldFilters.indexOf(x.value) < 0;
+        });
+        if (this.isFilterAllowed(addedOption[0].value, type)) {
+          this.state.allowedChoosenFilters[
+            type
+          ] = state.allowedChoosenFilters.hasOwnProperty(type)
+            ? [...state.allowedChoosenFilters[type], addedOption[0].value]
+            : [addedOption[0].value];
+        }
+      }
+    } else {
+      if (this.isFilterAllowed(selectedOption[0].value, type)) {
+        //Is the first choosen item
+        this.state.allowedChoosenFilters[type] = [selectedOption[0].value];
+      }
+    }
+    this.setAllowedLibraries();
+    console.log(this.allowedLibraries);
+    //    applyFilter()
+    this.setState({ selectedOption });
+  };
   render() {
     if (this.props.data === null) {
       return null;
     }
 
-    return <div className="Filters" ref={node => (this.node = node)} />;
+    const { selectedOption } = this.state;
+    const allowedFilters = this.allowedFilters;
+
+    var allAllowedFilters = {};
+    this.allowedLibraries.map(library => {
+      console.log(library);
+      Object.keys(library).map(key => {
+        var value = library[key];
+        console.log(value);
+        if (value !== "") {
+          allAllowedFilters[value] = "";
+        }
+      });
+    });
+
+    var filters = {};
+    var filterDisabled = {};
+
+    Object.keys(this.props.filters).map(filter => {
+      var choosenFilter = this.props.filters[filter];
+      if (allowedFilters.hasOwnProperty(filter)) {
+        filters[filter] = choosenFilter;
+        choosenFilter.map(value => {
+          filterDisabled[value] = allAllowedFilters.hasOwnProperty(value)
+            ? false
+            : true;
+        });
+      }
+    });
+
+    return Object.keys(filters).map(selectType => {
+      return (
+        <Select
+          closeMenuOnSelect={false}
+          components={makeAnimated()}
+          isMulti
+          value={this.selectedOption}
+          onChange={e => this.handleChange(e, this.state, selectType)}
+          options={filters[selectType].map(option => {
+            return {
+              label: option,
+              value: option,
+              isDisabled: filterDisabled[option]
+            };
+          })}
+        />
+      );
+    });
   }
 }
 

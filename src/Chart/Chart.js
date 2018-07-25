@@ -9,8 +9,8 @@ const Chart = ({ stats, library, samples }) => {
   const windowDim = {
     screenWidth: window.innerWidth,
     screenHeight: window.innerHeight,
-    width: window.innerWidth * 0.9,
-    height: window.innerHeight * 0.8
+    width: window.innerWidth * 0.6,
+    height: window.innerHeight * 0.5
   };
 
   //Global margins

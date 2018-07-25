@@ -3,9 +3,11 @@ import getData from "./utils/dataFetcher.js";
 import Chart from "./Chart/Chart.js";
 import Filters from "./Filters/Filters.js";
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "jquery/dist/jquery.min.js";
-import "bootstrap/dist/js/bootstrap.min.js";
+
+//import "jquery/src/jquery.js";
+//import "bootstrap/dist/css/bootstrap.min.css";
+//import "jquery/dist/jquery.min.js";
+//import "bootstrap/dist/js/bootstrap.min.js";
 
 class App extends Component {
   constructor(props) {

@@ -44,7 +44,7 @@ class CircleChart extends Component {
     function forceSimulation(updatedData) {
       //Hide the chart if looking at
       if (d3.select("#visualization-area").childElementCount != 0) {
-        d3.select("#bubbles").classed("hideBubbles", true);
+        //d3.select("#bubbles").classed("hideBubbles", true);
       }
 
       return d3
@@ -102,20 +102,23 @@ class CircleChart extends Component {
       tickedChart
         .enter()
         .append("a")
-        .attr("href", function(d) {
-          return colossusUrl + d.data.ticket;
-        })
+        //  .attr("href", function(d) {
+        //    return colossusUrl + d.data.ticket;
+        //    })
         .attr("target", "_blank")
         .append("circle")
         .attr("class", "circles")
         .attr("class", d => {
-          var classes = "";
+          var classes = "open-view ";
           allowedFilters.map(
             filter => (classes += "tag-" + d.data[filter] + " ")
           );
           return classes;
         })
         .attr("id", d => "library-" + d.data.id)
+        .attr("data-filter-term", d => d.data.jira_ticket)
+        .attr("data-sample-id", d => d.data.jira_ticket)
+        .attr("data-template-id", "QC Dashboard")
         .on("mouseenter", showTooltip)
         .on("mouseleave", hideTooltip)
         .merge(tickedChart)
