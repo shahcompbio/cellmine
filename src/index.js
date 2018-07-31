@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import About from "./About";
-import registerServiceWorker from "./registerServiceWorker";
 
 ReactDOM.render(<About />, document.querySelector("#about"));
 ReactDOM.render(<App />, document.querySelector("#bubbles"));

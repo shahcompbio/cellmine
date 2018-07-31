@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
-import { select } from "d3";
-import Select, { components } from "react-select";
-import Animated from "react-select/lib/animated";
+import Select from "react-select";
 import makeAnimated from "react-select/lib/animated";
 import ReactResponsiveSelect from "react-responsive-select";
 
@@ -179,7 +177,6 @@ class Filters extends Component {
       return null;
     }
 
-    const { selectedOption } = this.state;
     const allowedFilters = this.allowedFilters;
 
     var allAllowedFilters = {};
@@ -220,7 +217,7 @@ class Filters extends Component {
             isClearable={true}
             isSearchable={true}
             autoFocus={false}
-            components={makeAnimated()}
+            components={makeAnimated}
             loadingMessage={true}
             onChange={e => this.handleChange(e, this.state, selectType)}
             value={this.handleValue(this.state, selectType)}

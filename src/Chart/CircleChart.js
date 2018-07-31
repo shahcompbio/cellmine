@@ -13,9 +13,7 @@ class CircleChart extends Component {
 
   createChart() {
     const libraries = this.props.library,
-      info = this.props.info,
       samples = this.props.samples,
-      stats = this.props.stats,
       node = select(this.node),
       dim = this.props.windowDim,
       margin = this.props.margin,

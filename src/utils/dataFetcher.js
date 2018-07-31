@@ -41,7 +41,7 @@ function processFilters(data) {
   return data
     .reduce((result, hit) => [...result, hit["_source"]], [])
     .reduce((result, hit) => {
-      var unique = Object.keys(hit).filter(key => {
+      Object.keys(hit).filter(key => {
         if (!result.hasOwnProperty(key)) {
           result[key] = [];
         }
@@ -102,16 +102,6 @@ function nestedNotation(data) {
     .sort(function(a, b) {
       return a.data.seq - b.data.seq;
     });
-}
-function getNestLibraryDates(libraryDates) {
-  return libraryDates.reduce((rv, x) => {
-    if (rv.hasOwnProperty(x["seq"])) {
-      rv[x["seq"]] = [...rv[x["seq"]], x];
-    } else {
-      rv[x["seq"]] = [x];
-    }
-    return rv;
-  }, {});
 }
 
 export default getData;

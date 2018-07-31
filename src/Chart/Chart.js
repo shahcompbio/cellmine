@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import * as d3 from "d3";
-import { select } from "d3";
 import "d3-transition";
 import CircleChart from "./CircleChart.js";
 
