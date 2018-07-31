@@ -15,10 +15,10 @@ const Chart = ({ stats, library, samples }) => {
 
   //Global margins
   const margin = {
-    top: windowDim.screenHeight / 15,
+    top: windowDim.screenHeight / 10,
     right: 10,
     bottom: 5,
-    left: windowDim.screenWidth / 15,
+    left: windowDim.screenWidth / 10,
     general: 10
   };
 
@@ -78,20 +78,24 @@ const Chart = ({ stats, library, samples }) => {
    *
    * @param {String} type - Class name for given svg.
    */
-  function initializeSvg(type) {
-    return d3
-      .selectAll(type)
+  function initializeSvg() {
+    d3
+      .select(".App")
       .attr("width", windowDim.screenWidth)
-      .attr("height", windowDim.screenHeight)
+      .attr("height", windowDim.screenHeight);
+    return d3
+      .select(".Charts")
+      .attr("width", windowDim.width)
+      .attr("height", windowDim.height)
       .classed("svg-container", true)
       .attr("preserveAspectRatio", "xMinYMin meet")
+      .select(".CircleChart")
       .attr(
         "viewBox",
-        "0 0 " + windowDim.screenWidth + " " + windowDim.screenHeight + ""
+        "0 0 " + windowDim.width * 1.2 + " " + windowDim.screenHeight + ""
       )
       .classed("svg-content-responsive", true);
   }
-
   /**
    * Initialize the tooltip.
    */
@@ -112,11 +116,24 @@ const Chart = ({ stats, library, samples }) => {
       .select(".tooltip")
       .classed("hover", true)
       .html(function() {
+        var formattedDescription = "<br/>";
+        var descriptionArray = d.data.description.split("");
+        descriptionArray.map((character, index) => {
+          formattedDescription +=
+            index % 25 === 0 && index !== 0
+              ? character === " " ? "<br/>" : character + "-<br/>"
+              : character;
+        });
+
+        //d.data.description.length;
         return (
           "<b>Sample</b>: " +
           d.data.sample +
           "<br/> <b>Library</b>: " +
-          d.data.library +
+          d.data.pool_id +
+          "<br />" +
+          "<b>Description</b>: " +
+          d.data.description +
           "<br /> <b>Total Cells</b>: " +
           d.data.size +
           "<br /> <b>Seq Date</b>: " +
@@ -147,6 +164,7 @@ const Chart = ({ stats, library, samples }) => {
         margin={margin}
         windowDim={windowDim}
         colourScale={colourScale}
+        initializeSvg={initializeSvg}
         showTooltip={showTooltip}
         hideTooltip={hideTooltip}
       />

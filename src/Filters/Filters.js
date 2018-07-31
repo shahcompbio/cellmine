@@ -1,18 +1,24 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 import { select } from "d3";
-import Select from "react-select";
+import Select, { components } from "react-select";
 import Animated from "react-select/lib/animated";
 import makeAnimated from "react-select/lib/animated";
+import ReactResponsiveSelect from "react-responsive-select";
 
 class Filters extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allowedChoosenFilters: []
+      allowedChoosenFilters: [],
+      allowedLibraries: this.props.librarySpecificFilters,
+      selectedOption: null,
+      windowWidth: window.innerWidth * 0.8,
+      windowHeight: window.innerHeight * 0.8
     };
+    this.handleResize = this.handleResize.bind(this);
     this.allowedFilters = {
-      anonymous_patient_id: "Anonymous Patient ID",
+      anonymous_patient_id: "Patient ID",
       library: "Library",
       pool_id: "Sample ID",
       sample_type: " Sample Type",
@@ -20,28 +26,27 @@ class Filters extends Component {
       taxonomy_id: "Taxonomy",
       jira_ticket: "Ticket Number"
     };
-
-    this.allowedLibraries = this.props.librarySpecificFilters;
   }
   componentDidMount() {
     this.createChart();
+    window.addEventListener("resize", this.handleResize);
   }
 
   componentDidUpdate() {
     this.createChart();
   }
 
-  createChart() {
-    const windowDim = {
-      screenWidth: window.innerWidth,
-      screenHeight: window.innerHeight,
-      width: window.innerWidth * 0.9,
-      height: window.innerHeight * 0.8
-    };
-    const filters = this.props.filters;
-    const librarySpecificFilters = this.props.librarySpecificFilters;
+  handleResize(WindowSize, event) {
+    this.setState({
+      windowWidth: window.innerWidth * 0.6,
+      windowHeight: window.innerHeight * 0.6
+    });
+  }
 
-    function applyFilter(allowedLibraries) {
+  createChart() {
+    const allowedLibraries = this.state.allowedLibraries;
+
+    function applyFilter() {
       d3.selectAll(".CircleChart circle").classed("hiddenCircle", true);
 
       allowedLibraries.map(library => {
@@ -54,21 +59,19 @@ class Filters extends Component {
           .attr("r", d => d.r);
       });
     }
-    applyFilter(this.allowedLibraries);
+    applyFilter();
   }
-  state = {
-    selectedOption: null
-  };
 
   isFilterAllowed = (addedOption, type) => {
     var isFilterAllowed = false;
-    this.allowedLibraries.map(library => {
+    this.state.allowedLibraries.map(library => {
       if (library.hasOwnProperty(type) && library[type] === addedOption) {
         isFilterAllowed = true;
       }
     });
     return isFilterAllowed;
   };
+
   setAllowedLibraries = () => {
     var hiddenLibraries = [];
     Object.keys(this.state.allowedChoosenFilters).map(filter => {
@@ -84,53 +87,94 @@ class Filters extends Component {
       });
     });
 
-    this.allowedLibraries = this.props.librarySpecificFilters.filter(function(
-      x
-    ) {
-      return hiddenLibraries.indexOf(x) < 0;
-    });
+    this.state.allowedLibraries = this.props.librarySpecificFilters.filter(
+      function(x) {
+        return hiddenLibraries.indexOf(x) < 0;
+      }
+    );
   };
 
   handleChange = (selectedOption, state, type) => {
     var oldFilters = state.allowedChoosenFilters[type];
-    if (state.selectedOption !== undefined && oldFilters !== undefined) {
+    if (state.selectedOption !== null && oldFilters !== undefined) {
       var newFilters = [];
       //A deletion
-      if (selectedOption.length < oldFilters.length) {
-        //Go through all the old choosen options and find the one that is removed
-        var removedOption = oldFilters.filter(function(x) {
-          return selectedOption.map(hit => hit.value).indexOf(x) < 0;
-        });
-        //Get all the new options
-        //  var index = state.allowedChoosenFilters[type].indexOf(removedOption[0]);
-        this.state.allowedChoosenFilters[type] = state.allowedChoosenFilters[
-          type
-        ].filter(hit => hit !== removedOption[0]);
+      if (selectedOption === null) {
+        state.allowedChoosenFilters[type] = [];
       } else {
-        //selectedOption
-        var addedOption = selectedOption.filter(function(x) {
-          return oldFilters.indexOf(x.value) < 0;
-        });
-        if (this.isFilterAllowed(addedOption[0].value, type)) {
-          this.state.allowedChoosenFilters[
-            type
-          ] = state.allowedChoosenFilters.hasOwnProperty(type)
-            ? [...state.allowedChoosenFilters[type], addedOption[0].value]
-            : [addedOption[0].value];
+        //If allowed, add filter to accepted filter
+        if (this.isFilterAllowed(selectedOption.value, type)) {
+          this.state.allowedChoosenFilters[type] = [selectedOption.value];
         }
       }
     } else {
-      if (this.isFilterAllowed(selectedOption[0].value, type)) {
+      if (selectedOption === null) {
+        state.allowedChoosenFilters[type] = [];
+      } else if (this.isFilterAllowed(selectedOption.value, type)) {
         //Is the first choosen item
-        this.state.allowedChoosenFilters[type] = [selectedOption[0].value];
+        this.state.allowedChoosenFilters[type] = [selectedOption.value];
       }
     }
     this.setAllowedLibraries();
-    console.log(this.allowedLibraries);
-    //    applyFilter()
+
     this.setState({ selectedOption });
   };
+
+  clearFilters() {
+    this.setState({
+      allowedChoosenFilters: [],
+      allowedLibraries: this.props.librarySpecificFilters,
+      selectedOption: []
+    });
+  }
+
   render() {
+    return (
+      <div>
+        <div className="filtersGroup">{this.renderSelectFilters()}</div>
+        <div>{this.renderClearFiltersButton()}</div>
+      </div>
+    );
+  }
+
+  renderClearFiltersButton() {
+    return (
+      <button
+        type="button"
+        className="clearButton"
+        onClick={e => this.clearFilters()}
+      >
+        Clear
+      </button>
+    );
+  }
+
+  resetDisabledFilters(filterDisabled) {
+    return Object.keys(filterDisabled).map(key => {
+      filterDisabled[key] = false;
+    });
+  }
+  handleValue(state, selectType) {
+    var displayValue = null;
+    var allowedChoosenFilterKeys = Object.keys(state.allowedChoosenFilters);
+    if (allowedChoosenFilterKeys.length > 0) {
+      allowedChoosenFilterKeys.map(filter => {
+        if (filter === selectType) {
+          displayValue = state.allowedChoosenFilters[filter];
+        }
+      });
+    }
+    if (displayValue !== null) {
+      displayValue = displayValue.map(value => {
+        return {
+          label: value,
+          value: value
+        };
+      }, []);
+    }
+    return displayValue;
+  }
+  renderSelectFilters() {
     if (this.props.data === null) {
       return null;
     }
@@ -139,11 +183,10 @@ class Filters extends Component {
     const allowedFilters = this.allowedFilters;
 
     var allAllowedFilters = {};
-    this.allowedLibraries.map(library => {
-      console.log(library);
+
+    this.state.allowedLibraries.map(library => {
       Object.keys(library).map(key => {
         var value = library[key];
-        console.log(value);
         if (value !== "") {
           allAllowedFilters[value] = "";
         }
@@ -167,20 +210,29 @@ class Filters extends Component {
 
     return Object.keys(filters).map(selectType => {
       return (
-        <Select
-          closeMenuOnSelect={false}
-          components={makeAnimated()}
-          isMulti
-          value={this.selectedOption}
-          onChange={e => this.handleChange(e, this.state, selectType)}
-          options={filters[selectType].map(option => {
-            return {
-              label: option,
-              value: option,
-              isDisabled: filterDisabled[option]
-            };
-          })}
-        />
+        <div className="option">
+          <span className="controlTitle">
+            {this.allowedFilters[selectType]}
+          </span>
+          <Select
+            className="control"
+            closeMenuOnSelect={true}
+            isClearable={true}
+            isSearchable={true}
+            autoFocus={false}
+            components={makeAnimated()}
+            loadingMessage={true}
+            onChange={e => this.handleChange(e, this.state, selectType)}
+            value={this.handleValue(this.state, selectType)}
+            options={filters[selectType].map(option => {
+              return {
+                label: option,
+                value: option,
+                isDisabled: filterDisabled[option]
+              };
+            })}
+          />
+        </div>
       );
     });
   }

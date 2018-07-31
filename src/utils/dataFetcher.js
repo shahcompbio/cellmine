@@ -1,5 +1,7 @@
 import * as d3 from "d3";
+import config from "./config.js";
 const getData = callback => {
+  const index = "meta_data_stats";
   const url = "http://localhost:2210/meta_data_stats/_search?size=10000";
 
   fetchUrl(url, [], arr => {
@@ -17,9 +19,17 @@ const getData = callback => {
     callback(data);
   });
 };
-async function fetchUrl(url, arr, callback) {
-  fetch(url)
-    .then(response => response.json())
+
+async function fetchUrl(index, arr, callback) {
+  /*fetch(config.HOST + index + config.SEARCH, {
+    method: "POST",
+    credentials: "same-origin"
+  })*/
+  fetch(index)
+    .then(
+      response => response.json(),
+      error => console.log("An error occured.", error)
+    )
     .then(response => {
       const jsonArr = Object.values(response.hits.hits);
       callback(jsonArr);
@@ -49,7 +59,7 @@ function processLibs(data) {
   return data.map(hit => ({
     anonymous_patient_id: hit["_source"].anonymous_patient_id,
     jira_ticket: hit["_source"].jira_ticket,
-    //id: hit["_source"].id,
+    description: hit["_source"].description,
     pool_id: hit["_source"].pool_id,
     sample: hit["_source"].sample_id,
     sample_type: hit["_source"].sample_type,

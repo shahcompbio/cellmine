@@ -4,11 +4,6 @@ import Chart from "./Chart/Chart.js";
 import Filters from "./Filters/Filters.js";
 import "./App.css";
 
-//import "jquery/src/jquery.js";
-//import "bootstrap/dist/css/bootstrap.min.css";
-//import "jquery/dist/jquery.min.js";
-//import "bootstrap/dist/js/bootstrap.min.js";
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -28,14 +23,22 @@ class App extends Component {
   render() {
     return this.state.data === null ? null : (
       <div className="App">
+        <div className="Filters">
+          <span className="selectText">Select A Library:</span>
+          <Filters
+            filters={this.state.data.filters}
+            librarySpecificFilters={this.state.data.librarySpecificFilters}
+          />
+        </div>
         <Chart
           stats={this.state.data.stats}
           library={this.state.data.library}
           samples={this.state.data.samples}
         />
-        <Filters
-          filters={this.state.data.filters}
-          librarySpecificFilters={this.state.data.librarySpecificFilters}
+        <i
+          class="fa fa-3x fa-times"
+          aria-hidden="true"
+          style={{ color: "#adadad" }}
         />
       </div>
     );
