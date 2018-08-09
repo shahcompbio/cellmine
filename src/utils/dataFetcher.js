@@ -21,7 +21,7 @@ const getData = callback => {
 };
 
 async function fetchUrl(index, arr, callback) {
-  /*fetch(config.HOST + index + config.SEARCH, {
+  /*  fetch(config.HOST + index + config.SEARCH, {
     method: "POST",
     credentials: "same-origin"
   })*/
@@ -66,6 +66,8 @@ function processLibs(data) {
     size: hit["_source"].num_sublibraries,
     cell_line_id: hit["_source"].cell_line_id,
     taxonomy_id: hit["_source"].taxonomy_id,
+    xenograft_id: hit["_source"].xenograft_id,
+    quality: hit["_source"].quality,
     seq: parseTime(hit["_source"].submission_date)
   }));
 }

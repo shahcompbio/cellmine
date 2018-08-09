@@ -8,8 +8,10 @@ const Chart = ({ stats, library, samples }) => {
   const windowDim = {
     screenWidth: window.innerWidth,
     screenHeight: window.innerHeight,
+    appWidth: window.innerWidth * 0.6,
+    appHeight: window.innerHeight * 0.6,
     width: window.innerWidth * 0.6,
-    height: window.innerHeight * 0.5
+    height: window.innerHeight
   };
 
   //Global margins
@@ -79,19 +81,20 @@ const Chart = ({ stats, library, samples }) => {
    */
   function initializeSvg() {
     d3
-      .select(".App")
-      .attr("width", windowDim.screenWidth)
-      .attr("height", windowDim.screenHeight);
+      .select("#bubbles")
+      .attr("width", windowDim.screenWidth + "px")
+      .attr("height", windowDim.screenHeight + "px");
+
     return d3
       .select(".Charts")
-      .attr("width", windowDim.width)
+      .attr("width", windowDim.screenWidth)
       .attr("height", windowDim.height)
       .classed("svg-container", true)
       .attr("preserveAspectRatio", "xMinYMin meet")
       .select(".CircleChart")
       .attr(
         "viewBox",
-        "0 0 " + windowDim.width * 1.2 + " " + windowDim.screenHeight + ""
+        "0 0 " + windowDim.screenWidth * 0.7 + " " + windowDim.height + ""
       )
       .classed("svg-content-responsive", true);
   }

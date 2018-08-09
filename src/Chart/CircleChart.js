@@ -5,12 +5,39 @@ import { select } from "d3";
 class CircleChart extends Component {
   componentDidMount() {
     this.createChart();
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions);
   }
+  updateDimensions() {
+    var appWidth = window.innerWidth * 0.6;
 
-  componentDidUpdate() {
-    this.createChart();
+    var containerHeight = d3
+      .select(".App")
+      .node()
+      .getBoundingClientRect().height;
+    var numOptions = d3.selectAll(".option")._groups[0].length + 2;
+
+    //Dealing with firefox and chrome
+    var optionHeight =
+      containerHeight > 602 && containerHeight < 604
+        ? 65
+        : containerHeight / numOptions > 90
+          ? 90
+          : containerHeight / numOptions < 60
+            ? 60
+            : containerHeight / numOptions;
+
+    d3.selectAll(".option").style("height", optionHeight + "px");
+
+    var bubblesHeight = d3
+      .select(".CircleChart")
+      .node()
+      .getBoundingClientRect().height;
+
+    var margin = (containerHeight - bubblesHeight) / 3;
+
+    d3.select(".svg-content-responsive").style("margin-top", margin);
   }
-
   createChart() {
     const libraries = this.props.library,
       samples = this.props.samples,
@@ -31,6 +58,7 @@ class CircleChart extends Component {
       "taxonomy_id",
       "jira_ticket"
     ];
+
     //Initialize the bubble colours
     const chartColours = initializeChartColours(samples.length);
     initializeSvg();
@@ -42,11 +70,11 @@ class CircleChart extends Component {
     function forceSimulation(updatedData) {
       return d3
         .forceSimulation(updatedData)
-        .force("center", d3.forceCenter(dim.width / 2, dim.height / 2))
+        .force("center", d3.forceCenter(dim.width / 3, dim.height / 2))
         .force("charge", d3.forceManyBody().strength(-55))
         .force("collision", d3.forceCollide().radius(d => d.r + 5))
         .force("x", d3.forceX().x(d => samples.indexOf(d.data.sample) * 25))
-        .force("y", d3.forceY().y(d => d.y / 15))
+        .force("y", d3.forceY().y(d => d.y / 10))
         .alphaDecay(0.1)
         .alphaTarget(0.08)
         .force("cluster", clustering)
@@ -134,6 +162,7 @@ class CircleChart extends Component {
         .attr("data-filter-term", d => d.data.jira_ticket)
         .attr("data-sample-id", d => d.data.jira_ticket)
         .attr("data-template-id", "QC Dashboard")
+        .attr("data-quality-filter", d => d.data.quality)
         .on("mouseenter", showTooltip)
         .on("mouseleave", hideTooltip)
         .merge(tickedChart)

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import markdown from "../markdown/about.md";
+import "./About.css";
 var Markdown = require("react-markdown");
 
 class About extends Component {
@@ -9,10 +11,11 @@ class About extends Component {
     };
   }
 
-  componentWillMount() {
-    const markdown = require("./markdown/about.md");
-
+  componentDidMount() {
     fetch(markdown)
+      /*fetch("build" + markdown, {
+      credentials: "same-origin"
+    })*/
       .then(response => {
         return response.text();
       })
@@ -25,7 +28,16 @@ class About extends Component {
 
   render() {
     const { markdown } = this.state;
-    return markdown === null ? null : <Markdown source={markdown} />;
+    return markdown === null ? null : (
+      <div className="about-content">
+        <i
+          class="fa fa-3x fa-times"
+          aria-hidden="true"
+          style={{ color: "#adadad" }}
+        />
+        <Markdown source={markdown} />
+      </div>
+    );
   }
 }
 

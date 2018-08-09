@@ -14,31 +14,23 @@ class Filters extends Component {
       windowWidth: window.innerWidth * 0.8,
       windowHeight: window.innerHeight * 0.8
     };
-    this.handleResize = this.handleResize.bind(this);
     this.allowedFilters = {
       anonymous_patient_id: "Patient ID",
       library: "Library",
-      pool_id: "Sample ID",
+      pool_id: "Library ID",
       sample_type: " Sample Type",
       cell_line_id: "Cell Line ID",
       taxonomy_id: "Taxonomy",
-      jira_ticket: "Ticket Number"
+      jira_ticket: "Ticket Number",
+      xenograft_id: "Xenograft ID"
     };
   }
   componentDidMount() {
     this.createChart();
-    window.addEventListener("resize", this.handleResize);
   }
 
   componentDidUpdate() {
     this.createChart();
-  }
-
-  handleResize(WindowSize, event) {
-    this.setState({
-      windowWidth: window.innerWidth * 0.6,
-      windowHeight: window.innerHeight * 0.6
-    });
   }
 
   createChart() {
@@ -128,7 +120,7 @@ class Filters extends Component {
 
   render() {
     return (
-      <div>
+      <div className="filterContainer">
         <div className="filtersGroup">{this.renderSelectFilters()}</div>
         <div>{this.renderClearFiltersButton()}</div>
       </div>
@@ -221,7 +213,7 @@ class Filters extends Component {
             loadingMessage={true}
             onChange={e => this.handleChange(e, this.state, selectType)}
             value={this.handleValue(this.state, selectType)}
-            options={filters[selectType].map(option => {
+            options={filters[selectType].sort().map(option => {
               return {
                 label: option,
                 value: option,

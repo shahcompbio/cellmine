@@ -1,0 +1,17 @@
+.about-content {
+  padding-left: 30px;
+  position: absolute;
+  background-color: #fff;
+  text-align: left;
+  width: 60%;
+  height: 60%;
+  top: 15%;
+  left: 15%;
+  position: absolute;
+  overflow-y: auto;
+}
+.about-content i {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}

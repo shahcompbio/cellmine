@@ -1,13 +1,17 @@
 .App {
+  /*position: absolute;*/
+  min-height: 603px;
+  min-width: 620px;
   position: absolute;
+  display: block;
+  width: 60%;
+  height: 60%;
   text-align: center;
-  left: 35vh;
-  top: 15vh;
+  margin-left: 20%;
+  margin-top: 10%;
   background-color: white;
   text-align: center;
-  height: 70%;
-  width: 70%;
-  display: flex;
+  /*display: flex;*/
 }
 
 .App-logo {
@@ -55,26 +59,38 @@ div.tooltip.hover {
   outline: none;
 }
 .Filters {
-  width: 40%;
+  width: 30%;
+  padding-left: 2vw;
+  padding-top: 0.5vw;
   left: 5%;
-  position: relative;
-  top: 5%;
-  overflow: hidden;
-  height: 90%;
+  display: inline-block;
+  float: left;
+  /*position: relative;*/
+  height: 100%;
 }
-.control__option {
+.option {
+  margin-top: 3px;
   text-align: left;
+  height: 65px;
 }
 .hiddenCircle {
   display: none !important;
 }
 .filtersGroup {
 }
+.filterContainer {
+  max-width: inherit;
+  max-height: inherit;
+  height: inherit;
+  width: 100%;
+  float: left;
+}
 .control {
-  height: 70%;
   padding: 3%;
+  max-height: 70px;
+  min-height: 60px;
   max-width: 300px;
-  .min-width: 100px;
+  min-width: 100px;
 }
 .control__menu {
   padding-top: 0px;
@@ -86,6 +102,7 @@ div.tooltip.hover {
   display: block;
   float: left;
   padding: 5px;
+  padding-bottom: 0px;
 }
 .App i {
   position: absolute;
@@ -93,32 +110,37 @@ div.tooltip.hover {
   right: 15px;
 }
 .svg-container {
-  display: inline-block;
+  /*display: inline-block;*/
   position: relative;
-  width: 100%;
-  vertical-align: top;
+  width: 60%;
+  left: 40%;
+  /*vertical-align: top;*/
 }
 .svg-content-responsive {
-  display: inline-block;
+  width: 100%;
+  /*left: 50%;
+  top: 50%*/
   position: absolute;
   display: flex;
   align-items: center;
-  top: 10vh;
 }
 .selectText {
+  width: 100%;
+  text-align: left;
   float: left;
   font-size: 22px;
-  padding-bottom: 5px;
+  /*padding-bottom: 5px;*/
 }
 .clearButton:focus {
   outline: 0;
 }
 .clearButton {
-  float: right;
-  padding: 5px 10px 5px 10px;
-  margin-right: 12px;
-  margin-top: 10px;
+  float: left;
+  margin-left: 10px;
+  padding: 5px 10px;
+  margin-top: 20px;
   border-radius: 3px;
+  left: 50%;
 }
 @keyframes App-logo-spin {
   from {
