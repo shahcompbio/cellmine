@@ -32,11 +32,6 @@
   font-size: large;
 }
 
-circle:hover {
-  stroke: white;
-  stroke-width: 4px;
-}
-
 div.chartToolTip {
   z-index: 100001;
   position: absolute;
@@ -53,53 +48,9 @@ div.chartToolTip {
 div.chartToolTip.hover {
   opacity: 0.9;
 }
-.Select-input > input {
-  outline: none;
-}
-.Filters {
-  width: 30%;
-  padding-left: 2vw;
-  padding-top: 0.5vw;
-  left: 5%;
-  display: inline-block;
-  float: left;
-  height: 100%;
-}
-.option {
-  margin-top: 3px;
-  text-align: left;
-  height: 65px;
-}
+
 .hidden {
   display: none !important;
-}
-.filtersGroup {
-}
-.filterContainer {
-  max-width: inherit;
-  max-height: inherit;
-  height: inherit;
-  width: 100%;
-  float: left;
-}
-.control {
-  padding: 3%;
-  max-height: 70px;
-  min-height: 60px;
-  max-width: 300px;
-  min-width: 100px;
-}
-.control__menu {
-  padding-top: 0px;
-}
-.controlTitle {
-  text-align: left;
-  width: 300px;
-  position: relative;
-  display: block;
-  float: left;
-  padding: 5px;
-  padding-bottom: 0px;
 }
 .App i {
   color: #adadad;
@@ -125,73 +76,7 @@ div.chartToolTip.hover {
   display: flex;
   align-items: center;
 }
-.selectText {
-  width: 100%;
-  text-align: left;
-  float: left;
-  font-size: 22px;
-}
-.clearButton:focus {
-  outline: 0;
-}
-.clearButton {
-  float: left;
-  margin-left: 10px;
-  padding: 5px 10px;
-  margin-top: 20px;
-  border-radius: 3px;
-  left: 50%;
-}
-.guideToolTipOverlay {
-  height: 100vh;
-  z-index: 1000001;
-  background: grey;
-  position: relative;
-  opacity: 0.5;
-}
-.guideReorderElement {
-  z-index: 10000003 !important;
-  position: sticky;
-  background: white;
-}
-.tooltip {
-  z-index: 1000002;
-  background: white;
-  padding: 10px;
-  margin: 10px;
-  border-radius: 10px;
-}
-.bs-tooltip-right {
-  height: 50px;
-  opacity: 1;
-}
-#guideToolTip {
-  text-align: left;
-  background-color: white;
-  color: black;
-}
-.tooltip .fa-arrow-right {
-  position: absolute;
-  bottom: 5px;
-  right: 8px;
-  -webkit-text-stroke: 2px white;
-}
-#guide {
-  position: absolute;
-  box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.4);
-  z-index: 100000;
-}
-.guideArrow {
-  width: 0;
-  height: 0;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
 
-  border-left: 5px solid white;
-}
-.showGuideToolTip {
-  opacity: 1 !important;
-}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

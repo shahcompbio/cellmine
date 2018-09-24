@@ -1,0 +1,63 @@
+Select-input > input {
+  outline: none;
+}
+.Filters {
+  width: 30%;
+  padding-left: 2vw;
+  padding-top: 0.5vw;
+  left: 5%;
+  display: inline-block;
+  float: left;
+  height: 100%;
+}
+.option {
+  margin-top: 3px;
+  text-align: left;
+  height: 65px;
+}
+
+.filtersGroup {
+}
+.filterContainer {
+  max-width: inherit;
+  max-height: inherit;
+  height: inherit;
+  width: 100%;
+  float: left;
+}
+.control {
+  padding: 3%;
+  max-height: 70px;
+  min-height: 60px;
+  max-width: 300px;
+  min-width: 100px;
+}
+.control__menu {
+  padding-top: 0px;
+}
+.controlTitle {
+  text-align: left;
+  width: 300px;
+  position: relative;
+  display: block;
+  float: left;
+  padding: 5px;
+  padding-bottom: 0px;
+}
+.selectText {
+  width: 100%;
+  text-align: left;
+  float: left;
+  font-size: 22px;
+}
+.clearButton:focus {
+  outline: 0;
+}
+.clearButton {
+  float: left;
+  margin-left: 10px;
+  padding: 5px 10px;
+  margin-top: 20px;
+  border-radius: 3px;
+  left: 50%;
+}

@@ -1,0 +1,50 @@
+.guideToolTipOverlay {
+  height: 100vh;
+  z-index: 1000001;
+  background: grey;
+  position: relative;
+  opacity: 0.5;
+}
+.guideReorderElement {
+  z-index: 10000003 !important;
+  position: sticky;
+  background: white;
+}
+.tooltip {
+  z-index: 1000002;
+  background: white;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+}
+.bs-tooltip-right {
+  height: 50px;
+  opacity: 1;
+}
+#guideToolTip {
+  text-align: left;
+  background-color: white;
+  color: black;
+}
+.tooltip .fa-arrow-right {
+  position: absolute;
+  bottom: 5px;
+  right: 8px;
+  -webkit-text-stroke: 2px white;
+}
+#guide {
+  position: absolute;
+  box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.4);
+  z-index: 100000;
+}
+.guideArrow {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+
+  border-left: 5px solid white;
+}
+.showGuideToolTip {
+  opacity: 1 !important;
+}

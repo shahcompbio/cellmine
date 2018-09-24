@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import { Tooltip } from "reactstrap";
 import "font-awesome/css/font-awesome.min.css";
+import "./Tooltip.css";
 
 const guideMapping = {
   1: {

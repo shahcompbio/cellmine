@@ -4,6 +4,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/lib/animated";
 import ReactResponsiveSelect from "react-responsive-select";
 import GuideToolTip from "../ToolTips/ToolTip.js";
+import "./Filters.css";
 
 class Filters extends Component {
   constructor(props) {

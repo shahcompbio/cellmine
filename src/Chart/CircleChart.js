@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 import { select } from "d3";
-
+import "./Circle.css";
 class CircleChart extends Component {
   constructor(props) {
     super(props);
