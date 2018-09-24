@@ -1,6 +1,5 @@
 .App {
-  /*position: absolute;*/
-  min-height: 603px;
+  min-height: 603px !important;
   min-width: 620px;
   position: absolute;
   display: block;
@@ -11,7 +10,6 @@
   margin-top: 10%;
   background-color: white;
   text-align: center;
-  /*display: flex;*/
 }
 
 .App-logo {
@@ -39,7 +37,7 @@ circle:hover {
   stroke-width: 4px;
 }
 
-div.tooltip {
+div.chartToolTip {
   z-index: 100001;
   position: absolute;
   text-align: left;
@@ -52,7 +50,7 @@ div.tooltip {
   max-width: 200px;
   word-wrap: break-word;
 }
-div.tooltip.hover {
+div.chartToolTip.hover {
   opacity: 0.9;
 }
 .Select-input > input {
@@ -65,7 +63,6 @@ div.tooltip.hover {
   left: 5%;
   display: inline-block;
   float: left;
-  /*position: relative;*/
   height: 100%;
 }
 .option {
@@ -73,7 +70,7 @@ div.tooltip.hover {
   text-align: left;
   height: 65px;
 }
-.hiddenCircle {
+.hidden {
   display: none !important;
 }
 .filtersGroup {
@@ -105,21 +102,25 @@ div.tooltip.hover {
   padding-bottom: 0px;
 }
 .App i {
+  color: #adadad;
+}
+.App .fa-times {
   position: absolute;
   top: 15px;
   right: 15px;
 }
+.App .fa-question-circle {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
 .svg-container {
-  /*display: inline-block;*/
   position: relative;
   width: 60%;
-  left: 40%;
-  /*vertical-align: top;*/
+  left: 35%;
 }
 .svg-content-responsive {
   width: 100%;
-  /*left: 50%;
-  top: 50%*/
   position: absolute;
   display: flex;
   align-items: center;
@@ -129,7 +130,6 @@ div.tooltip.hover {
   text-align: left;
   float: left;
   font-size: 22px;
-  /*padding-bottom: 5px;*/
 }
 .clearButton:focus {
   outline: 0;
@@ -141,6 +141,56 @@ div.tooltip.hover {
   margin-top: 20px;
   border-radius: 3px;
   left: 50%;
+}
+.guideToolTipOverlay {
+  height: 100vh;
+  z-index: 1000001;
+  background: grey;
+  position: relative;
+  opacity: 0.5;
+}
+.guideReorderElement {
+  z-index: 10000003 !important;
+  position: sticky;
+  background: white;
+}
+.tooltip {
+  z-index: 1000002;
+  background: white;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+}
+.bs-tooltip-right {
+  height: 50px;
+  opacity: 1;
+}
+#guideToolTip {
+  text-align: left;
+  background-color: white;
+  color: black;
+}
+.tooltip .fa-arrow-right {
+  position: absolute;
+  bottom: 5px;
+  right: 8px;
+  -webkit-text-stroke: 2px white;
+}
+#guide {
+  position: absolute;
+  box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.4);
+  z-index: 100000;
+}
+.guideArrow {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+
+  border-left: 5px solid white;
+}
+.showGuideToolTip {
+  opacity: 1 !important;
 }
 @keyframes App-logo-spin {
   from {

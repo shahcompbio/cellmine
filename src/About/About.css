@@ -1,4 +1,7 @@
 .about-content {
+  max-width: 1200px !important;
+  min-height: 603px !important;
+  min-width: 930px !important;
   padding-left: 30px;
   position: absolute;
   background-color: #fff;
@@ -6,12 +9,54 @@
   width: 60%;
   height: 60%;
   top: 15%;
-  left: 15%;
+  left: 25%;
   position: absolute;
   overflow-y: auto;
 }
+.about-content div {
+  padding-left: 50px;
+  padding-right: 80px;
+}
+.about-content img {
+  display: block;
+  float: left;
+  margin-right: 15px;
+}
+.about-content h2 {
+  margin-bottom: 0px;
+}
+.about-content p {
+  margin-top: 8px;
+  margin-right: 30px;
+}
 .about-content i {
-  position: absolute;
-  top: 15px;
-  right: 15px;
+  float: right;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+#montage-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#montage-img img {
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.subTitle {
+  padding-top: 15px;
+}
+.subTitle p {
+  margin: 0px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.topMargin p {
+  margin-top: 15px;
+}
+.plotContent ul,
+.plotContent ul p {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }

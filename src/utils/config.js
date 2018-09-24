@@ -1,7 +1,25 @@
+let url;
+let aboutCredentials = {};
+let dataFetcherCredentials = {};
+
+const hostname = window && window.location && window.location.hostname;
+
+if (hostname === "localhost" || hostname === "") {
+  url = "http://localhost:2210/meta_data_stats/_search?size=10000";
+} else {
+  url = "/meta_data_stats/_search?size=10000";
+  aboutCredentials = {
+    credentials: "same-origin"
+  };
+  dataFetcherCredentials = {
+    method: "POST",
+    credentials: "same-origin"
+  };
+}
 const config = {
-  HOST: "https://40.86.218.15:11444/",
-  //HOST: "https://www.cellmine.org:11444",
-  SEARCH: "/_search?size=10000"
+  URL: url,
+  ABOUTCREDENTIALS: aboutCredentials,
+  DATACREDENTIALS: dataFetcherCredentials
 };
 
 export default config;

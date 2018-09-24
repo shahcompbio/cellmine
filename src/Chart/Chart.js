@@ -6,11 +6,7 @@ import CircleChart from "./CircleChart.js";
 const Chart = ({ stats, library, samples }) => {
   //Chart dimensions according to screen size
   const windowDim = {
-    screenWidth: window.innerWidth,
-    screenHeight: window.innerHeight,
-    appWidth: window.innerWidth * 0.6,
-    appHeight: window.innerHeight * 0.6,
-    width: window.innerWidth * 0.6,
+    width: window.innerWidth * 0.5,
     height: window.innerHeight
   };
 
@@ -82,21 +78,22 @@ const Chart = ({ stats, library, samples }) => {
   function initializeSvg() {
     d3
       .select("#bubbles")
-      .attr("width", windowDim.screenWidth + "px")
-      .attr("height", windowDim.screenHeight + "px");
+      .attr("width", window.innerWidth + "px")
+      .attr("height", window.innerHeight + "px");
 
     return d3
       .select(".Charts")
-      .attr("width", windowDim.screenWidth)
-      .attr("height", windowDim.height)
+      .attr("width", window.innerWidth)
+      .attr("height", window.innerHeight)
       .classed("svg-container", true)
       .attr("preserveAspectRatio", "xMinYMin meet")
       .select(".CircleChart")
       .attr(
         "viewBox",
-        "0 0 " + windowDim.screenWidth * 0.7 + " " + windowDim.height + ""
+        "0 0 " + window.innerWidth * 0.7 + " " + window.innerHeight + ""
       )
-      .classed("svg-content-responsive", true);
+      .classed("svg-content-responsive", true)
+      .attr("id", "bubbleChartToolTip");
   }
   /**
    * Initialize the tooltip.
@@ -105,7 +102,7 @@ const Chart = ({ stats, library, samples }) => {
     return d3
       .select("body")
       .append("div")
-      .attr("class", "tooltip");
+      .attr("class", "chartToolTip");
   }
 
   /**
@@ -115,7 +112,7 @@ const Chart = ({ stats, library, samples }) => {
    */
   function showTooltip(d) {
     d3
-      .select(".tooltip")
+      .select(".chartToolTip")
       .classed("hover", true)
       .html(function() {
         var formattedDescription = "<br/>";
@@ -150,11 +147,11 @@ const Chart = ({ stats, library, samples }) => {
    * Hide the tooltip.
    */
   function hideTooltip() {
-    d3.select(".tooltip").classed("hover", false);
+    d3.select(".chartToolTip").classed("hover", false);
   }
 
   //Append the main CircleChart svg container
-  initializeSvg(".CircleChart");
+  initializeSvg();
   initializeTooltip();
 
   return (

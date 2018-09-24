@@ -3,20 +3,51 @@ import * as d3 from "d3";
 import { select } from "d3";
 
 class CircleChart extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { simulation: null };
+  }
+
   componentDidMount() {
     this.createChart();
-    this.updateDimensions();
-    window.addEventListener("resize", this.updateDimensions);
   }
-  updateDimensions() {
-    var appWidth = window.innerWidth * 0.6;
+  updateDimensions = () => {
+    this.updateCircleDimensions();
+    this.updateFilterDimensions();
+  };
+  updateCircleDimensions() {
+    if (this.state !== null) {
+      var appDim = d3
+        .select(".App")
+        .node()
+        .getBoundingClientRect();
 
+      var circleChartDim = d3
+        .select(".CircleChart")
+        .node()
+        .getBoundingClientRect();
+
+      var forceBubblesLeft = appDim.x + appDim.width / 3;
+      var forceBubblesTop = appDim.y + appDim.height / 2;
+      var bubblesX = appDim.x + appDim.width * 0.3 - circleChartDim.x;
+      var bubblesY = appDim.y + appDim.height / 15 - circleChartDim.y;
+
+      d3
+        .select(".CircleChart")
+        .attr("transform", "translate(" + bubblesX + "," + bubblesY + ")");
+
+      this.state.simulation.force(
+        "center",
+        d3.forceCenter(forceBubblesLeft, forceBubblesTop)
+      );
+    }
+  }
+  updateFilterDimensions() {
     var containerHeight = d3
       .select(".App")
       .node()
       .getBoundingClientRect().height;
     var numOptions = d3.selectAll(".option")._groups[0].length + 2;
-
     //Dealing with firefox and chrome
     var optionHeight =
       containerHeight > 602 && containerHeight < 604
@@ -28,15 +59,6 @@ class CircleChart extends Component {
             : containerHeight / numOptions;
 
     d3.selectAll(".option").style("height", optionHeight + "px");
-
-    var bubblesHeight = d3
-      .select(".CircleChart")
-      .node()
-      .getBoundingClientRect().height;
-
-    var margin = (containerHeight - bubblesHeight) / 3;
-
-    d3.select(".svg-content-responsive").style("margin-top", margin);
   }
   createChart() {
     const libraries = this.props.library,
@@ -65,15 +87,23 @@ class CircleChart extends Component {
     //Initialize location of circles according to similiar samples
     const clusters = getClusters();
     //Create a forced simulation and append circles to screen
-    forceSimulation(libraries);
+    const simulation = forceSimulation(libraries);
+
+    this.setState({ simulation: simulation }, () => this.updateDimensions());
+
+    window.addEventListener("resize", this.updateFilterDimensions);
 
     function forceSimulation(updatedData) {
+      var horizontalSpread = window.innerWidth * 0.6 < 750 ? 15 : 20;
+
       return d3
         .forceSimulation(updatedData)
-        .force("center", d3.forceCenter(dim.width / 3, dim.height / 2))
         .force("charge", d3.forceManyBody().strength(-55))
         .force("collision", d3.forceCollide().radius(d => d.r + 5))
-        .force("x", d3.forceX().x(d => samples.indexOf(d.data.sample) * 25))
+        .force(
+          "x",
+          d3.forceX().x(d => samples.indexOf(d.data.sample) * horizontalSpread)
+        )
         .force("y", d3.forceY().y(d => d.y / 10))
         .alphaDecay(0.1)
         .alphaTarget(0.08)
@@ -161,15 +191,15 @@ class CircleChart extends Component {
         .attr("id", d => "library-" + d.data.id)
         .attr("data-filter-term", d => d.data.jira_ticket)
         .attr("data-sample-id", d => d.data.jira_ticket)
-        .attr("data-template-id", "QC Dashboard")
+        .attr("data-template-id", d => d.data.dashboard)
         .attr("data-quality-filter", d => d.data.quality)
         .on("mouseenter", showTooltip)
         .on("mouseleave", hideTooltip)
         .merge(tickedChart)
         .attr("r", d => d.r)
         .attr("cx", d => d.x)
-        .attr("cy", d => d.y)
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("cy", d => d.y);
+      //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       tickedChart.exit().remove();
     }

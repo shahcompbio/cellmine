@@ -3,6 +3,7 @@ import getData from "./utils/dataFetcher.js";
 import Chart from "./Chart/Chart.js";
 import Filters from "./Filters/Filters.js";
 import "./App.css";
+import GuideToolTip from "./ToolTips/ToolTip.js";
 
 class App extends Component {
   constructor(props) {
@@ -35,11 +36,11 @@ class App extends Component {
           library={this.state.data.library}
           samples={this.state.data.samples}
         />
-        <i
-          class="fa fa-3x fa-times"
-          aria-hidden="true"
-          style={{ color: "#adadad" }}
-        />
+        <i className="fa fa-3x fa-times" aria-hidden="true" />
+        <div>
+          <i className="fa fa-2x fa-question-circle" id="toolTipGuideButton" />
+        </div>
+        <GuideToolTip />
       </div>
     );
   }

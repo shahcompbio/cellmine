@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import Select from "react-select";
 import makeAnimated from "react-select/lib/animated";
 import ReactResponsiveSelect from "react-responsive-select";
+import GuideToolTip from "../ToolTips/ToolTip.js";
 
 class Filters extends Component {
   constructor(props) {
@@ -10,9 +11,7 @@ class Filters extends Component {
     this.state = {
       allowedChoosenFilters: [],
       allowedLibraries: this.props.librarySpecificFilters,
-      selectedOption: null,
-      windowWidth: window.innerWidth * 0.8,
-      windowHeight: window.innerHeight * 0.8
+      selectedOption: null
     };
     this.allowedFilters = {
       anonymous_patient_id: "Patient ID",
@@ -21,7 +20,7 @@ class Filters extends Component {
       sample_type: " Sample Type",
       cell_line_id: "Cell Line ID",
       taxonomy_id: "Taxonomy",
-      jira_ticket: "Ticket Number",
+      jira_ticket: "Dataset",
       xenograft_id: "Xenograft ID"
     };
   }
@@ -37,12 +36,12 @@ class Filters extends Component {
     const allowedLibraries = this.state.allowedLibraries;
 
     function applyFilter() {
-      d3.selectAll(".CircleChart circle").classed("hiddenCircle", true);
+      d3.selectAll(".CircleChart circle").classed("hidden", true);
 
       allowedLibraries.map(library => {
         d3
           .selectAll(".CircleChart circle.tag-" + library["jira_ticket"])
-          .classed("hiddenCircle", false)
+          .classed("hidden", false)
           .attr("r", 5)
           .transition()
           .duration(500)
@@ -120,8 +119,10 @@ class Filters extends Component {
 
   render() {
     return (
-      <div className="filterContainer">
-        <div className="filtersGroup">{this.renderSelectFilters()}</div>
+      <div className="filterContainer" id="filterContainerToolTip">
+        <div className="filtersGroup" id="filtersGroupToolTip">
+          {this.renderSelectFilters()}
+        </div>
         <div>{this.renderClearFiltersButton()}</div>
       </div>
     );
@@ -213,13 +214,22 @@ class Filters extends Component {
             loadingMessage={true}
             onChange={e => this.handleChange(e, this.state, selectType)}
             value={this.handleValue(this.state, selectType)}
-            options={filters[selectType].sort().map(option => {
-              return {
-                label: option,
-                value: option,
-                isDisabled: filterDisabled[option]
-              };
-            })}
+            options={filters[selectType]
+              .sort(
+                (a, b) =>
+                  a - b ||
+                  a.localeCompare(b, undefined, {
+                    numeric: true,
+                    sensitivity: "base"
+                  })
+              )
+              .map(option => {
+                return {
+                  label: option,
+                  value: option,
+                  isDisabled: filterDisabled[option]
+                };
+              })}
           />
         </div>
       );

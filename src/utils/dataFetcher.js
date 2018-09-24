@@ -1,8 +1,7 @@
 import * as d3 from "d3";
 import config from "./config.js";
 const getData = callback => {
-  const index = "meta_data_stats";
-  const url = "http://localhost:2210/meta_data_stats/_search?size=10000";
+  const url = config.URL;
 
   fetchUrl(url, [], arr => {
     const libraries = processLibs(arr);
@@ -20,12 +19,8 @@ const getData = callback => {
   });
 };
 
-async function fetchUrl(index, arr, callback) {
-  /*  fetch(config.HOST + index + config.SEARCH, {
-    method: "POST",
-    credentials: "same-origin"
-  })*/
-  fetch(index)
+async function fetchUrl(url, arr, callback) {
+  fetch(url, config.DATACREDENTIALS)
     .then(
       response => response.json(),
       error => console.log("An error occured.", error)
@@ -62,6 +57,7 @@ function processLibs(data) {
     description: hit["_source"].description,
     pool_id: hit["_source"].pool_id,
     sample: hit["_source"].sample_id,
+    dashboard: hit["_source"].dashboard,
     sample_type: hit["_source"].sample_type,
     size: hit["_source"].num_sublibraries,
     cell_line_id: hit["_source"].cell_line_id,
