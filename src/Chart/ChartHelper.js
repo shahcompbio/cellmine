@@ -26,3 +26,54 @@ export const allowedFilters = [
   "taxonomy_id",
   "jira_ticket"
 ];
+//Global colour scales
+export const colourScale = [
+  [
+    "#d8a8d4",
+    "#ade1b8",
+    "#a8b2e4",
+    "#dbdba4",
+    "#69c0df",
+    "#d5ab84",
+    "#91e5df",
+    "#e4a0a7",
+    "#65b8b1",
+    "#92b283"
+  ],
+  [
+    "#ff9f99",
+    "#00d757",
+    "#ffb3e7",
+    "#befd0a",
+    "#626dae",
+    "#E2CD76",
+    "#dcc5ff",
+    "#009e4b",
+    "#317b86",
+    "#55ffeb"
+  ],
+  [
+    "#7b4a6a",
+    "#88b48d",
+    "#485b86",
+    "#c69a76",
+    "#59afc5",
+    "#edac9b",
+    "#9ea1d2",
+    "#B3AF83",
+    "#d194ab",
+    "#366a51"
+  ],
+  [
+    "#759089",
+    "#ffd4e9",
+    "#90d3b2",
+    "#d19a7a",
+    "#90e2ff",
+    "#D8D599",
+    "#6fd2dd",
+    "#e3f1d2",
+    "#5d91aa",
+    "#c8f5fa"
+  ]
+];

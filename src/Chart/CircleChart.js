@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { select } from "d3";
 import "./Circle.css";
 import { updateDimensions, getBoundingBox } from "../utils/updateDimensions.js";
-import { shadeColor, allowedFilters } from "./ChartHelper.js";
+import { shadeColor, allowedFilters, colourScale } from "./ChartHelper.js";
 
 class CircleChart extends Component {
   constructor(props) {
@@ -54,7 +54,6 @@ class CircleChart extends Component {
     const libraries = this.props.library,
       samples = this.props.samples,
       node = select(this.node),
-      colourScale = this.props.colourScale,
       initializeSvg = this.props.initializeSvg.bind(this),
       hideTooltip = this.props.hideTooltip.bind(this),
       showTooltip = this.props.showTooltip.bind(this);
