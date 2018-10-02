@@ -2,23 +2,8 @@ import React from "react";
 import * as d3 from "d3";
 import "d3-transition";
 import CircleChart from "./CircleChart.js";
-
+import { getBubbleWindowRatio } from "../utils/updateDimensions.js";
 const Chart = ({ stats, library, samples }) => {
-  //Chart dimensions according to screen size
-  const windowDim = {
-    width: window.innerWidth * 0.5,
-    height: window.innerHeight
-  };
-
-  //Global margins
-  const margin = {
-    top: windowDim.screenHeight / 10,
-    right: 10,
-    bottom: 5,
-    left: windowDim.screenWidth / 10,
-    general: 10
-  };
-
   //Global colour scales
   const colourScale = [
     [
@@ -76,22 +61,21 @@ const Chart = ({ stats, library, samples }) => {
    * @param {String} type - Class name for given svg.
    */
   function initializeSvg() {
+    var windowWidthRatio = getBubbleWindowRatio();
+
     d3
       .select("#bubbles")
-      .attr("width", window.innerWidth + "px")
-      .attr("height", window.innerHeight + "px");
+      .attr("width", "100%")
+      .attr("height", "100%");
 
     return d3
       .select(".Charts")
-      .attr("width", window.innerWidth)
-      .attr("height", window.innerHeight)
+      .attr("width", "70%")
+      .attr("height", "100%")
       .classed("svg-container", true)
       .attr("preserveAspectRatio", "xMinYMin meet")
       .select(".CircleChart")
-      .attr(
-        "viewBox",
-        "0 0 " + window.innerWidth * 0.7 + " " + window.innerHeight + ""
-      )
+      .attr("viewBox", "0 0 " + window.innerWidth * windowWidthRatio + " 1500")
       .classed("svg-content-responsive", true)
       .attr("id", "bubbleChartToolTip");
   }
@@ -160,8 +144,6 @@ const Chart = ({ stats, library, samples }) => {
         library={library}
         samples={samples}
         stats={stats}
-        margin={margin}
-        windowDim={windowDim}
         colourScale={colourScale}
         initializeSvg={initializeSvg}
         showTooltip={showTooltip}

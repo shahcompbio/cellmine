@@ -48,3 +48,6 @@
 .showGuideToolTip {
   opacity: 1 !important;
 }
+.hideGuideToolTip {
+  opacity: 0 !important;
+}

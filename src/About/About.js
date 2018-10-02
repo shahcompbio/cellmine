@@ -35,7 +35,7 @@ class About extends Component {
     const { markdown } = this.state;
     var parsedMarkdown = md.render(markdown);
     return markdown === null ? null : (
-      <div className="about-content">
+      <div className="About App">
         <i
           className="fa fa-3x fa-times"
           aria-hidden="true"

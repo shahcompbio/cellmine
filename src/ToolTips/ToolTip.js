@@ -3,23 +3,22 @@ import * as d3 from "d3";
 import { Tooltip } from "reactstrap";
 import "font-awesome/css/font-awesome.min.css";
 import "./Tooltip.css";
+import { setTooltipDimensions } from "./TooltipHelper.js";
 
 const guideMapping = {
   1: {
     className: ".CircleChart circle",
     message: "Choose a library by clicking on a circle",
     placement: "left",
-    target: ".CircleChart",
-    targetPaddingMin: 20,
-    targetPaddingMax: 50
+    target: "guide"
   },
   2: {
     className: ".control",
     message: "Filter out libraries by using these filters",
     placement: "left-start",
-    target: "#filterContainerToolTip",
-    targetPaddingMin: 5,
-    targetPaddingMax: 5
+    target: "guide",
+    targetPaddingMin: { x: 5, y: 5 },
+    targetPaddingMax: { x: 5, y: 5 }
   }
 };
 
@@ -34,33 +33,7 @@ class GuideToolTip extends Component {
   resize = e => {
     var step = guideMapping[this.state.step];
     if (step !== undefined) {
-      var c = {};
-      //Find bounding box for tooltip target
-      var boundingBoxElements = d3.selectAll(step.className);
-      boundingBoxElements.nodes().map(element => {
-        var elementDim = element.getBoundingClientRect();
-        c["xMin"] = c.hasOwnProperty("xMin")
-          ? elementDim.x < c.xMin ? elementDim.x : c.xMin
-          : elementDim.x;
-        c["yMin"] = c.hasOwnProperty("yMin")
-          ? elementDim.y < c.yMin ? elementDim.y : c.yMin
-          : elementDim.y;
-        c["xMax"] = c.hasOwnProperty("xMax")
-          ? elementDim.x + elementDim.width > c.xMax
-            ? elementDim.x + elementDim.width
-            : c.xMax
-          : elementDim.x + elementDim.width;
-        c["yMax"] = c.hasOwnProperty("yMax")
-          ? elementDim.y + elementDim.height > c.yMax
-            ? elementDim.y + elementDim.height
-            : c.yMax
-          : elementDim.y + elementDim.height;
-      });
-      //Add extra padding
-      c.x = c["xMin"] - step.targetPaddingMin;
-      c.y = c["yMin"] - step.targetPaddingMin;
-      c.width = c["xMax"] - c["xMin"] + step.targetPaddingMax;
-      c.height = c["yMax"] - c["yMin"] + step.targetPaddingMax;
+      var c = setTooltipDimensions(step);
 
       d3
         .select("#guide")
@@ -81,6 +54,7 @@ class GuideToolTip extends Component {
     ) {
       //Get the step
       var step = guideMapping[this.state.step];
+      this.setState({ isOpen: true });
       this.setState({ tooltipPlacement: step.placement, target: step.target });
 
       //Move the tooltip target to the bounding box
@@ -97,9 +71,8 @@ class GuideToolTip extends Component {
         this.showToolTipElements();
       }
     } else {
-      //Hide all tool tip related elements
-      d3.select("#guideToolTip").classed("hidden", true);
-      d3.select(".bs-tooltip-left").classed("showGuideToolTip", false);
+      this.setState({ isOpen: false });
+
       d3.select("#guide").classed("hidden", true);
 
       //Reset the step to 0
@@ -114,6 +87,8 @@ class GuideToolTip extends Component {
 
   showToolTipElements = () => {
     d3.select(".bs-tooltip-left").classed("showGuideToolTip", true);
+    d3.select(".bs-tooltip-right").classed("showGuideToolTip", true);
+
     d3.select(".showGuideToolTip").on("mousedown", this.nextStep);
   };
   componentDidMount() {

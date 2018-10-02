@@ -1,35 +1,36 @@
-.about-content {
+.About {
   max-width: 1200px !important;
   min-height: 603px !important;
-  min-width: 930px !important;
-  padding-left: 30px;
+  min-width: 620px !important;
+  /*  padding-left: 30px;
   position: absolute;
   background-color: #fff;
   text-align: left;
-  width: 60%;
-  height: 60%;
-  top: 15%;
-  left: 25%;
+ width: 60vw;
+  height: 60vh;
+  top: 15vh;
+  left: 25vw;*/
+  text-align: left;
   position: absolute;
   overflow-y: auto;
 }
-.about-content div {
+.About div {
   padding-left: 50px;
   padding-right: 80px;
 }
-.about-content img {
+.About img {
   display: block;
   float: left;
   margin-right: 15px;
 }
-.about-content h2 {
+.About h2 {
   margin-bottom: 0px;
 }
-.about-content p {
+.About p {
   margin-top: 8px;
   margin-right: 30px;
 }
-.about-content i {
+.About i {
   float: right;
   margin-right: 10px;
   margin-top: 10px;
