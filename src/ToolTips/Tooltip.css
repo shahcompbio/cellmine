@@ -25,6 +25,11 @@
   text-align: left;
   background-color: white;
   color: black;
+  max-width: 300px;
+  line-height: 1.5;
+}
+#guideToolTip p {
+  line-height: 1.5;
 }
 .tooltip .fa-arrow-right {
   position: absolute;

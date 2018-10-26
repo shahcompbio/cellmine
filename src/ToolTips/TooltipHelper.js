@@ -15,7 +15,7 @@ export const setTooltipDimensions = step => {
       c["xMin"] === elementDim.x &&
       !step.hasOwnProperty("targetPaddingMin")
     ) {
-      c.targetPaddingMin["x"] = elementDim.width;
+      c.targetPaddingMin["x"] = elementDim.width / 2;
     }
 
     c["yMin"] = c.hasOwnProperty("yMin")
@@ -37,7 +37,7 @@ export const setTooltipDimensions = step => {
       c["xMax"] === elementDim.x + elementDim.width &&
       !step.hasOwnProperty("targetPaddingMax")
     ) {
-      c.targetPaddingMax["x"] = elementDim.width;
+      c.targetPaddingMax["x"] = elementDim.width * 2;
     }
 
     c["yMax"] = c.hasOwnProperty("yMax")
@@ -50,7 +50,7 @@ export const setTooltipDimensions = step => {
       c["yMax"] === elementDim.y + elementDim.height &&
       !step.hasOwnProperty("targetPaddingMax")
     ) {
-      c.targetPaddingMax["y"] = elementDim.height;
+      c.targetPaddingMax["y"] = elementDim.height * 2;
     }
   });
   if (!step.hasOwnProperty("targetPaddingMax")) {
@@ -59,7 +59,6 @@ export const setTooltipDimensions = step => {
   if (!step.hasOwnProperty("targetPaddingMin")) {
     step.targetPaddingMin = { ...c.targetPaddingMin };
   }
-
   c.x = c["xMin"] - step.targetPaddingMin.x;
 
   c.y = c["yMin"] - step.targetPaddingMin.y;

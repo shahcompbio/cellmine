@@ -8,7 +8,8 @@ import { setTooltipDimensions } from "./TooltipHelper.js";
 const guideMapping = {
   1: {
     className: ".CircleChart circle",
-    message: "Choose a library by clicking on a circle",
+    message:
+      "Select a library by clicking on a circle. The size of the circle depends on how many cells were sampled",
     placement: "left",
     target: "guide"
   },
@@ -59,6 +60,7 @@ class GuideToolTip extends Component {
 
       //Move the tooltip target to the bounding box
       this.resize();
+
       //Append the tooltip message
       d3
         .select("#guideToolTip")
