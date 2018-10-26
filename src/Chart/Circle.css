@@ -2,3 +2,15 @@ circle:hover {
   stroke: white;
   stroke-width: 4px;
 }
+.svg-container {
+  position: relative;
+  width: 60%;
+  left: 35%;
+}
+.svg-content-responsive {
+  left: 0px;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+}

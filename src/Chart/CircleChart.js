@@ -14,38 +14,46 @@ class CircleChart extends Component {
   componentDidMount() {
     this.createChart();
   }
-
   updateCirclePosition = () => {
-    //Resize circles according to screen size
-    var appDim = getBoundingBox(".App");
-
-    var widthRatio, heightRatio;
-    if (appDim.width + "px" === d3.select(".App").style("max-width")) {
-      widthRatio = 50;
-      heightRatio = 1.5;
-    } else if (appDim.width + "px" === d3.select(".App").style("min-width")) {
-      widthRatio = 250;
-      heightRatio = 1;
-    } else {
-      widthRatio = 200;
-      heightRatio = 1.3;
-    }
-
-    var forceBubblesLeft = appDim.x + widthRatio;
-    var forceBubblesTop = appDim.y + appDim.height / heightRatio;
-
     var resizeWidth = window.innerWidth;
     var resizeHeight = window.innerHeight;
-    var resizeRadiusRatio =
-      (resizeWidth / this.state.width + resizeHeight / this.state.height) / 2;
+    var bubbles = d3.select("#bubbles");
+    if (bubbles !== null) {
+      if (!bubbles.classed("hideBubbles")) {
+        //Resize circles according to screen size
+        var appDim = getBoundingBox(".App");
 
-    this.props.library.map(node => (node.r = node.r * resizeRadiusRatio));
-    //reforce and restart simulation
-    this.state.simulation
-      .force("center", d3.forceCenter(forceBubblesLeft, forceBubblesTop))
-      .force("collision", d3.forceCollide().radius(d => d.r + 5))
-      .force("radius", d => d.r)
-      .restart();
+        var widthRatio, heightRatio;
+        if (appDim.width + "px" === d3.select(".App").style("max-width")) {
+          widthRatio = 70;
+          heightRatio = 1.2;
+        } else if (
+          appDim.width + "px" ===
+          d3.select(".App").style("min-width")
+        ) {
+          widthRatio = 250;
+          heightRatio = 1;
+        } else {
+          widthRatio = 250;
+          heightRatio = 1;
+        }
+
+        var forceBubblesLeft = appDim.x + widthRatio;
+        var forceBubblesTop = appDim.y + appDim.height / heightRatio;
+        var resizeRadiusRatio =
+          (resizeWidth / this.state.width + resizeHeight / this.state.height) /
+          2;
+
+        this.props.library.map(node => (node.r = node.r * resizeRadiusRatio));
+        //reforce and restart simulation
+        this.state.simulation
+          .force("center", d3.forceCenter(forceBubblesLeft, forceBubblesTop))
+          .force("collision", d3.forceCollide().radius(d => d.r + 5))
+          .force("radius", d => d.r)
+          .restart();
+      }
+    }
+
     //set the state with new dimsensions
     this.setState({ width: resizeWidth, height: resizeHeight });
   };
@@ -148,7 +156,13 @@ class CircleChart extends Component {
         .attr("target", "_blank")
         .append("circle")
         .attr("class", "circles")
-        .attr("class", "open-view")
+        .attr("class", d => {
+          var classes = "open-view ";
+          allowedFilters.map(
+            filter => (classes += "tag-" + d.data[filter] + " ")
+          );
+          return classes;
+        })
         .attr("data-filter-term", d => d.data.jira_ticket)
         .attr("data-sample-id", d => d.data.jira_ticket)
         .attr("data-template-id", d => d.data.dashboard)

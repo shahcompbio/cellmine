@@ -18,6 +18,8 @@ export const shadeColor = (color, percent) => {
   );
 };
 export const allowedFilters = [
+  "additional_pathology_info",
+  "pathology_disease_name",
   "anonymous_patient_id",
   "library",
   "sample",
