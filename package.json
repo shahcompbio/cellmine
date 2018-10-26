@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "d3": "^5.5.0",
     "d3-transition": "^1.1.1",
+    "detect-browser": "^3.0.1",
     "font-awesome": "^4.7.0",
     "jquery": "^1.11.0",
     "marked": "^0.4.0",

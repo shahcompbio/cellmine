@@ -12,20 +12,15 @@ export const updateDimensions = () => {
 };
 
 function updateFilterDimensions() {
-  var containerHeight = d3
-    .select(".App")
-    .node()
-    .getBoundingClientRect().height;
+  var containerHeight = getBoundingBox(".App").height;
 
-  var numOptions = d3.selectAll(".option")._groups[0].length + 2;
+  var numOptions = d3.selectAll(".option")._groups[0].length + 1;
 
   //Dealing with firefox and chrome
   var optionHeight =
-    containerHeight > 602 && containerHeight < 604
-      ? 65
-      : containerHeight / numOptions > 90
-        ? 90
-        : containerHeight / numOptions < 60 ? 60 : containerHeight / numOptions;
+    containerHeight / numOptions <= 72
+      ? 60
+      : containerHeight / (numOptions + 1.3);
 
   d3.selectAll(".option").style("height", optionHeight + "px");
 }
@@ -47,17 +42,19 @@ function updateWindowDimensions(className) {
   var appDim = getBoundingBox(className);
 
   if (appDim.width === 1200) {
-    d3.selectAll(className).style("margin-left", "25vw");
+    d3.selectAll(className).style("margin-left", "23vw");
   } else {
     d3.selectAll(className).style("margin-left", "20vw");
   }
 }
 function updateBubblesDimensions(simulation) {
   var appWidth = getBoundingBox(".App").width;
-  var viewBoxRatio = getBubbleAppRatio();
-  d3
-    .select(".CircleChart")
-    .attr("viewBox", "0 0 " + appWidth * viewBoxRatio + " 1500");
+  if (appWidth !== 0) {
+    var viewBoxRatio = getBubbleAppRatio();
+    d3
+      .select(".CircleChart")
+      .attr("viewBox", "0 0 " + appWidth * viewBoxRatio + " 1500");
+  }
 }
 
 export const getBoundingBox = elementName => {

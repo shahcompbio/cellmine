@@ -1,13 +1,13 @@
 .App {
   max-width: 1200px !important;
-  min-height: 603px !important;
+  min-height: 700px !important;
   min-width: 620px;
   position: absolute;
   display: block;
   width: 60vw;
   height: 60vh;
   margin-left: 20vw;
-  margin-top: 20vh;
+  margin-top: 15vh;
   background-color: white;
   text-align: center;
 }
@@ -64,25 +64,4 @@ div.chartToolTip.hover {
   position: absolute;
   bottom: 15px;
   right: 15px;
-}
-.svg-container {
-  position: relative;
-  width: 60%;
-  left: 35%;
-}
-.svg-content-responsive {
-  left: 0px;
-  width: 100%;
-  position: absolute;
-  display: flex;
-  align-items: center;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

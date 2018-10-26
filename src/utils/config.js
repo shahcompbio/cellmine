@@ -1,5 +1,5 @@
 let url;
-let aboutCredentials = {};
+let markdownCredentials = {};
 let dataFetcherCredentials = {};
 
 const hostname = window && window.location && window.location.hostname;
@@ -8,7 +8,7 @@ if (hostname === "localhost" || hostname === "") {
   url = "http://localhost:2210/meta_data_stats/_search?size=10000";
 } else {
   url = "/meta_data_stats/_search?size=10000";
-  aboutCredentials = {
+  markdownCredentials = {
     credentials: "same-origin"
   };
   dataFetcherCredentials = {
@@ -18,7 +18,7 @@ if (hostname === "localhost" || hostname === "") {
 }
 const config = {
   URL: url,
-  ABOUTCREDENTIALS: aboutCredentials,
+  MARKDOWNCREDENTIALS: markdownCredentials,
   DATACREDENTIALS: dataFetcherCredentials
 };
 

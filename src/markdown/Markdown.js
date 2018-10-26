@@ -1,15 +1,19 @@
 import React, { Component } from "react";
-import markdown from "../markdown/about.md";
-import fig1 from "../markdown/figures/fig1.png";
-import fig2 from "../markdown/figures/fig2.png";
+import aboutMarkdown from "./about.md";
+import incompatibleMarkdown from "./incompatible.md";
+import fig1 from "./figures/fig1.png";
+import fig2 from "./figures/fig2.png";
+import IE from "./figures/IE.png";
 import config from "../utils/config.js";
+import * as d3 from "d3";
 
-import "./About.css";
-var Markdown = require("react-markdown");
+import "./Markdown.css";
+
+var ReactMarkdown = require("react-markdown");
 var Remarkable = require("remarkable");
 var md = new Remarkable({ html: true, breaks: true });
 
-class About extends Component {
+class Markdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,9 +22,14 @@ class About extends Component {
   }
 
   componentDidMount() {
-    const url = config.URL;
-
-    fetch(markdown, config.ABOUTCREDENTIALS)
+    const type = this.props.type;
+    if (type === "About") {
+      var markdown = aboutMarkdown;
+    } else {
+      var markdown = incompatibleMarkdown;
+      d3.select("#incompatible").classed("hidden", false);
+    }
+    fetch(markdown, config.MARKDOWNCREDENTIALS)
       .then(response => {
         return response.text();
       })
@@ -33,9 +42,10 @@ class About extends Component {
 
   render() {
     const { markdown } = this.state;
+    const className = this.props.type + " App";
     var parsedMarkdown = md.render(markdown);
     return markdown === null ? null : (
-      <div className="About App">
+      <div className={className}>
         <i
           className="fa fa-3x fa-times"
           aria-hidden="true"
@@ -46,4 +56,4 @@ class About extends Component {
     );
   }
 }
-export default About;
+export default Markdown;

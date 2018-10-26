@@ -52,6 +52,8 @@ function processLibs(data) {
   var parseTime = d3.timeParse("%Y-%m-%d");
 
   return data.map(hit => ({
+    additional_pathology_info: hit["_source"].additional_pathology_info,
+    pathology_disease_name: hit["_source"].pathology_disease_name,
     anonymous_patient_id: hit["_source"].anonymous_patient_id,
     jira_ticket: hit["_source"].jira_ticket,
     description: hit["_source"].description,

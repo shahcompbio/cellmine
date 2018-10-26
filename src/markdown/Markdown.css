@@ -1,15 +1,22 @@
+.Incompatible {
+  display: table;
+  position: fixed !important;
+}
+.Incompatible img {
+  padding: 15px;
+}
+.Incompatible i {
+  display: none !important;
+}
+.Incompatible div {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
 .About {
   max-width: 1200px !important;
   min-height: 603px !important;
   min-width: 620px !important;
-  /*  padding-left: 30px;
-  position: absolute;
-  background-color: #fff;
-  text-align: left;
- width: 60vw;
-  height: 60vh;
-  top: 15vh;
-  left: 25vw;*/
   text-align: left;
   position: absolute;
   overflow-y: auto;
