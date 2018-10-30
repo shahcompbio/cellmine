@@ -18,8 +18,8 @@ function updateFilterDimensions() {
 
   //Dealing with firefox and chrome
   var optionHeight =
-    containerHeight / numOptions <= 72
-      ? 60
+    containerHeight / numOptions <= 65
+      ? 53
       : containerHeight / (numOptions + 1.3);
 
   d3.selectAll(".option").style("height", optionHeight + "px");
@@ -46,9 +46,23 @@ function updateWindowDimensions(className) {
   } else {
     d3.selectAll(className).style("margin-left", "20vw");
   }
+
+  var bubbleHeight = window.innerHeight;
+  var vh;
+  if (bubbleHeight <= 800 && bubbleHeight > 730) {
+    vh = "10vh";
+  } else if (bubbleHeight <= 730 && bubbleHeight > 650) {
+    vh = "5vh";
+  } else if (bubbleHeight <= 650) {
+    vh = "0vh";
+  } else {
+    vh = "15vh";
+  }
+  d3.selectAll(".App").style("margin-top", vh);
 }
-function updateBubblesDimensions(simulation) {
+function updateBubblesDimensions() {
   var appWidth = getBoundingBox(".App").width;
+
   if (appWidth !== 0) {
     var viewBoxRatio = getBubbleAppRatio();
     d3

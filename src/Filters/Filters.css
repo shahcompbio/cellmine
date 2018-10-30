@@ -11,14 +11,13 @@ Select-input > input {
   height: 100%;
 }
 .option {
-  margin-top: 3px;
+  margin-top: 8px;
   text-align: left;
-  height: 65px;
+  height: 55px;
 }
 
-.filtersGroup {
-}
 .filterContainer {
+  margin-top: -15px;
   max-width: inherit;
   max-height: inherit;
   height: inherit;
@@ -43,12 +42,16 @@ Select-input > input {
   float: left;
   padding: 5px;
   padding-bottom: 0px;
+  line-height: 20px;
+  font-size: 15px;
 }
 .selectText {
   width: 100%;
+  font-size: 25px;
+  position: absolute;
+  top: 22px;
+  left: 32%;
   text-align: left;
-  float: left;
-  font-size: 22px;
 }
 .clearButton:focus {
   outline: 0;

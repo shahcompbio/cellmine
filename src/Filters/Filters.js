@@ -92,7 +92,6 @@ class Filters extends Component {
   handleChange = (selectedOption, state, type) => {
     var oldFilters = state.allowedChoosenFilters[type];
     if (state.selectedOption !== null && oldFilters !== undefined) {
-      var newFilters = [];
       //A deletion
       if (selectedOption === null) {
         state.allowedChoosenFilters[type] = [];

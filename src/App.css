@@ -1,6 +1,6 @@
 .App {
   max-width: 1200px !important;
-  min-height: 700px !important;
+  min-height: 605px !important;
   min-width: 620px;
   position: absolute;
   display: block;
@@ -57,8 +57,8 @@ div.chartToolTip.hover {
 }
 .App .fa-times {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 5px;
+  right: 5px;
 }
 .App .fa-question-circle {
   position: absolute;
