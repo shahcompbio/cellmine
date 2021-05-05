@@ -101,6 +101,7 @@ class GuideToolTip extends Component {
 
     //Handle resize
     window.addEventListener("resize", this.resize);
+
   }
 
   render() {

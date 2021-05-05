@@ -65,7 +65,9 @@ _Terms for cell call:_
 
 ## Acknowledgements
 
-The work described and the laboratories of SA and SS supported by BC Cancer Foundation, Canadian Institutes for Health Research (CIHR), Canadian Cancer Society Research Institute (CCSRI), Terry Fox Research Institute (TFRI), Canadian Foundation for Innovation (CFI), Canada Research Chairs program, Michael Smith Foundation for Health Research (MSFHR), Microsoft Canada, Cancer Research UK Grand challenge IMAXT award (CRUK).
+The work described and the laboratories of SA and SS supported by BC Cancer Foundation, Canadian Institutes for Health Research (CIHR), Canadian Cancer Society Research Institute (CCSRI), Terry Fox Research Institute (TFRI), Canadian Foundation for Innovation (CFI), Canada Research Chairs program, Michael Smith Foundation for Health Research (MSFHR), Microsoft Canada, Cancer Research UK Grand challenge IMAXT award (CRUK) and Genome BC/Genome Canada.
+
+Our icon was designed by [Freepik](https://www.freepik.com/) from Flaticon.
 
 ## Contact/ Support
 

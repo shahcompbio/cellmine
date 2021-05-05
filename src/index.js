@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import Markdown from "./Markdown/Markdown.js";
+import Markdown from "./markdown/Markdown.js";
 import GuideToolTip from "./ToolTips/ToolTip.js";
 import "babel-polyfill";
 

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import * as d3 from "d3";
-import { select } from "d3";
+import {select} from "d3";
 import "./Circle.css";
-import { updateDimensions, getBoundingBox } from "../utils/updateDimensions.js";
-import { shadeColor, allowedFilters, colourScale } from "./ChartHelper.js";
+import {updateDimensions, getBoundingBox} from "../utils/updateDimensions.js";
+import {shadeColor, allowedFilters, colourScale} from "./ChartHelper.js";
 
 class CircleChart extends Component {
   constructor(props) {
     super(props);
-    this.state = { simulation: null, height: null, width: null };
+    this.state = {simulation: null, height: null, width: null};
   }
 
   componentDidMount() {
@@ -55,7 +55,7 @@ class CircleChart extends Component {
     }
 
     //set the state with new dimsensions
-    this.setState({ width: resizeWidth, height: resizeHeight });
+    this.setState({width: resizeWidth, height: resizeHeight});
   };
 
   createChart() {
@@ -75,10 +75,8 @@ class CircleChart extends Component {
     const simulation = forceSimulation(libraries);
 
     //  this.setState({ simulation: simulation }, () => this.updateDimensions());
-    this.setState({ width: window.innerWidth, height: window.innerHeight });
-    this.setState({ simulation: simulation }, () =>
-      this.updateCirclePosition()
-    );
+    this.setState({width: window.innerWidth, height: window.innerHeight});
+    this.setState({simulation: simulation}, () => this.updateCirclePosition());
     //Update app dimensions
     updateDimensions();
     var that = this;
@@ -126,7 +124,7 @@ class CircleChart extends Component {
           l = Math.sqrt(x * x + y * y),
           r = node.r + cluster.r;
         if (l !== r) {
-          l = (l - r) / l * alpha;
+          l = ((l - r) / l) * alpha;
           node.x -= x *= l;
           node.y -= y *= l;
           cluster.x += x;
